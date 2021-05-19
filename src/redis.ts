@@ -40,7 +40,7 @@ class RedisConnector {
 
 	constructor(redisPrefix: string) {
 		this.redisPrefix = redisPrefix;
-		this.redis = RedisInst.createClient(process.env.REDIS_URL as any);
+		this.redis = RedisInst.createClient(process.env.FP_REDIS_URL as any);
 	}
 
 	private resolveTokenSha1 (cb) {
