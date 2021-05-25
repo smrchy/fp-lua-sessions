@@ -30,19 +30,26 @@ const resolveAccessToken = async (token: string): Promise<IJwtData> => {
 
 export const resolveSession = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		let cookies = null;
+		let authtoken: string|null = null;
+
 		if (req.headers.cookie) {
-			cookies = cookie.parse(req.headers.cookie)
+			const cookies = cookie.parse(req.headers.cookie);
+			authtoken = cookies[process.env.FP_COOKIE_NAME as string]
 		}
-		if (!cookies || !cookies[process.env.FP_COOKIE_NAME as string]) {
+		// If we find an authorization header we take that token over the cookie!!!
+		if (req.headers.authorization && req.headers.authorization.slice(0,7) === "Bearer ") {
+			authtoken = req.headers.authorization.slice(7);
+		}
+
+		if (!authtoken) {
 			next({
-				error: `Invalid cookie (${process.env.FP_COOKIE_NAME}) provided`,
+				error: `Invalid OAuth2 authorization / cookie (${process.env.FP_COOKIE_NAME}) provided`,
 				status: 401
 			});
 			return;
 		}
 
-		const token = await resolveAccessToken(cookies["fpx_auth"]);
+		const token = await resolveAccessToken(authtoken);
 		RedisConnector.resolveToken(
 			token.dscid,
 			token.session,
