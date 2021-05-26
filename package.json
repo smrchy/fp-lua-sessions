@@ -1,6 +1,6 @@
 {
 	"name": "fp-lua-sessions",
-	"version": "1.4.0",
+	"version": "1.4.2",
 	"description": "This module is an express middleware and should resolve a session stored in a JWT and store the results in res.locals.session.",
 	"main": "dist/main.js",
 	"scripts": {

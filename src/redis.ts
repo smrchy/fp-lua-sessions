@@ -92,6 +92,13 @@ class RedisConnector {
 						groups: result[1]?.map((id: string) => parseInt(id)) ?? [],
 						roleNames: result[2] ?? []
 					};
+					if (!o.data) {
+						cb({
+							error: `No valid session found`,
+							status: 401
+						})
+						return;
+					}
 					cb(null, o);
 				}
 			);
