@@ -23,7 +23,7 @@ const LUA_RESOLVE_TOKEN = `
 		redis.call("SET", KEYS[5], ARGV[3])
 		-- refresh ttl, if it is set
 		local ttl = redis.call("TTL", KEYS[1])
-		if ttl then
+		if ttl >= 0 then
 			redis.call("EXPIRE", KEYS[1], ARGV[1])
 			redis.call("EXPIRE", KEYS[2], ARGV[1])
 			redis.call("EXPIRE", KEYS[3], ARGV[1])
