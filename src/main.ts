@@ -55,7 +55,7 @@ export const resolveSession = async (req: Request, res: Response, next: NextFunc
 			token.session,
 			token.dscaid,
 			req.get("user-agent") || "MISSING-USER-AGENT",
-			1440,
+			86400,
 			(err, resp) => {
 				if (err) { next(err); return; }
 				res.locals.session = resp;
